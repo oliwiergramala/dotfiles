@@ -1,16 +1,17 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -30,9 +31,9 @@
 
   # Docker
   virtualisation.docker = {
-	enable = true;
+    enable = true;
   };
-  
+
   # Bluetooth
   hardware.bluetooth.enable = true;
 
@@ -97,45 +98,45 @@
   users.users.oliwier = {
     isNormalUser = true;
     description = "Oliwier";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-        kdePackages.kate
-        signal-desktop
-        vscode
-        neofetch
-        discord
-        dwarf-fortress
-	neovim
-	wineWow64Packages.full
-	yt-dlp
-	moc
-	logseq
-	megasync
-	flatpak
+      kdePackages.kate
+      signal-desktop
+      vscode
+      neofetch
+      discord
+      dwarf-fortress
+      wineWow64Packages.full
+      yt-dlp
+      moc
+      logseq
+      megasync
+      flatpak
+      go-task
     ];
   };
   systemd.services.flatpak-repo = {
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.flatpak ];
+    wantedBy = ["multi-user.target"];
+    path = [pkgs.flatpak];
     script = ''
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     '';
-   };
+  };
 
-services.flatpak.enable = true;
+  services.flatpak.enable = true;
   programs.git = {
-  	enable = true;
-  	config = {
-		user.name = "xX0V3RL0RDXx";
-		user.email = "olivier.gramala@gmail.com";
-	
-	init = {
-		defaultBranch = "main";
-	};
+    enable = true;
+    config = {
+      user.name = "xX0V3RL0RDXx";
+      user.email = "olivier.gramala@gmail.com";
+
+      init = {
+        defaultBranch = "main";
       };
+    };
   };
   # Install firefox.
-  programs.firefox.enable = true;  
+  programs.firefox.enable = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -144,24 +145,24 @@ services.flatpak.enable = true;
   environment.systemPackages = with pkgs; [
     #vim
     wget
-kdePackages.discover
- ];
- programs.bash = {
- 	promptInit = '' if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-    PROMPT_COLOR="1;31m"
-    ((UID)) && PROMPT_COLOR="1;32m"
-    if [ -n "$INSIDE_EMACS" ]; then
-      # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-      PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-    else
-      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\\$\[\033[0m\] "
-    fi
-    if test "$TERM" = "xterm"; then
-      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
-    fi
-  fi
-  neofetch '';
- };
+    kdePackages.discover
+  ];
+  programs.bash = {
+    promptInit = ''      if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+         PROMPT_COLOR="1;31m"
+         ((UID)) && PROMPT_COLOR="1;32m"
+         if [ -n "$INSIDE_EMACS" ]; then
+           # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+           PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+         else
+           PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\\$\[\033[0m\] "
+         fi
+         if test "$TERM" = "xterm"; then
+           PS1="\[\033]2;\h:\u:\w\007\]$PS1"
+         fi
+       fi
+       neofetch '';
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
