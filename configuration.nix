@@ -4,6 +4,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -11,6 +12,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    #inputs.nveem.packages.x86_64-linux.default
   ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -113,8 +115,13 @@
       megasync
       flatpak
       go-task
+      direnv
+      gcc
+      zig
     ];
   };
+
+  programs.direnv.enable = true;
   systemd.services.flatpak-repo = {
     wantedBy = ["multi-user.target"];
     path = [pkgs.flatpak];
@@ -135,6 +142,7 @@
       };
     };
   };
+
   # Install firefox.
   programs.firefox.enable = true;
   # Allow unfree packages
@@ -143,9 +151,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #vim
+    vim    
     wget
     kdePackages.discover
+   # inputs.nveem.packages.x86_64-linux.default
   ];
   programs.bash = {
     promptInit = ''      if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
