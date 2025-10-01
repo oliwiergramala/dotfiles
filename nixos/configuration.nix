@@ -30,18 +30,25 @@
 
   # SSH
   services.openssh.enable = true;
-hardware.opengl.driSupport32Bit = true; 
+  
+  hardware.opengl.driSupport32Bit = true; 
+  
   # Docker
   virtualisation.docker = {
     enable = true;
-  }; 
-  programs.steam = {
-  enable = true;
-  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-};
-	
+  };  
+
+  # Starship
+  programs.starship = {
+  	enable = true;
+  	settings = {
+    		add_newline = false;
+    		character = { success_symbol = "[❯](bold green)"; error_symbol = "[❯](bold red)"; };
+    		git_branch = { symbol = "🌱 "; };
+    		git_status = { disabled = false; };
+  	};
+  };
+
   # Bluetooth
   hardware.bluetooth.enable = true;
 
@@ -161,8 +168,10 @@ hardware.opengl.driSupport32Bit = true;
     vim    
     wget
     kdePackages.discover
+    home-manager
    # inputs.nveem.packages.x86_64-linux.default
   ];
+
   programs.bash = {
     promptInit = ''      if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
          PROMPT_COLOR="1;31m"
