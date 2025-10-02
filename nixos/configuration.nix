@@ -37,18 +37,7 @@
   virtualisation.docker = {
     enable = true;
   };  
-
-  # Starship
-  programs.starship = {
-  	enable = true;
-  	settings = {
-    		add_newline = false;
-    		character = { success_symbol = "[❯](bold green)"; error_symbol = "[❯](bold red)"; };
-    		git_branch = { symbol = "🌱 "; };
-    		git_status = { disabled = false; };
-  	};
-  };
-
+ 
   # Bluetooth
   hardware.bluetooth.enable = true;
 
@@ -67,7 +56,7 @@
     LC_NUMERIC = "pl_PL.UTF-8";
     LC_PAPER = "pl_PL.UTF-8";
     LC_TELEPHONE = "pl_PL.UTF-8";
-    LC_TIME = "pl_PL.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
 
   # Enable the X11 windowing system.
@@ -159,6 +148,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+ 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -172,22 +162,27 @@
    # inputs.nveem.packages.x86_64-linux.default
   ];
 
-  programs.bash = {
-    promptInit = ''      if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-         PROMPT_COLOR="1;31m"
-         ((UID)) && PROMPT_COLOR="1;32m"
-         if [ -n "$INSIDE_EMACS" ]; then
-           # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-           PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-         else
-           PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\\$\[\033[0m\] "
-         fi
-         if test "$TERM" = "xterm"; then
-           PS1="\[\033]2;\h:\u:\w\007\]$PS1"
-         fi
-       fi
-       neofetch '';
-  };
+programs.bash = {
+  promptInit = ''
+    parse_git_branch() {
+      git rev-parse --abbrev-ref HEAD 2>/dev/null
+    }
+
+    CYAN="\[\033[1;36m\]"
+    BLUE="\[\033[0;34m\]"
+    RED="\[\033[0;31m\]"    
+    RESET="\[\033[0m\]"
+
+    PS1="$CYAN[\u@\h]$RESET $BLUE\w$RESET :$RED \$(parse_git_branch)$RESET \\$ "
+
+    neofetch
+  '';
+};
+
+
+
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
