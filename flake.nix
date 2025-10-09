@@ -1,8 +1,7 @@
 {
-   description = "NixOS configuration";
-   nixConfig = {
-    # substituers will be appended to the default substituters when fetching packages
-    # nix com    extra-substituters = [munity's cache server
+  description = "NixOS configuration";
+
+  nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
     ];
@@ -10,49 +9,33 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-    inputs = {
+
+  inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    catppuccin-bat = {
-      url = "github:catppuccin/bat";
-      flake = false;
-    };
-
-    neve = {
-     url = "github:redyf/Neve";
-     inputs.nixpkgs.follows = "nixpkgs";
-   };
-
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  }: {
-    nixosConfigurations = {
-      nixos = let
-        username = "oliwier";
-        specialArgs = {inherit inputs;};
-      in
-        nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
+  outputs = { self, nixpkgs, home-manager, ... } @inputs:
+    let
+      system = "x86_64-linux";
+      username = "oliwier";
+      specialArgs = { inherit inputs; };
+      pkgs = import nixpkgs { inherit system; };
+    in {
+      nixosConfigurations.${username} = nixpkgs.lib.nixosSystem {
+        inherit system specialArgs;
+        modules = [
+          ./nixos/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${username} = import ./home-manager/home.nix;
+          }
+        ];
+      };
 
-          modules = [
-            ./nixos/configuration.nix
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./home-manager/home.nix;
-            }
-          ];
-        }; 
+      devShells.${system}.default = import ./devshell/default.nix { inherit pkgs; };
     };
-  };
 }

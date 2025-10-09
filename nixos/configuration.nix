@@ -137,7 +137,7 @@
   programs.git = {
     enable = true;
     config = {
-      user.name = "xX0V3RL0RDXx";
+      user.name = "oliwiergramala";
       user.email = "olivier.gramala@gmail.com";
 
       init = {
