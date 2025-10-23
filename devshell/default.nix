@@ -1,18 +1,39 @@
-{ pkgs }:
+{ pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  packages = with pkgs; [
-    python3
-    python3Packages.pip
+  name = "dotnet-env";
 
-    # .NET SDKs
-    dotnet-sdk_8
-    dotnet-sdk_9
+  description = "Development environment for building .NET applications with SkiaSharp on NixOS.";
+
+  buildInputs = with pkgs; [
+    # .NET SDK
+    dotnetCorePackages.sdk_9_0
+
+    # Core system libraries required by .NET runtime
+    icu
+    zlib
+    openssl
+    curl
+    libunwind
+
+    # SkiaSharp native dependencies
+    freetype
+    fontconfig
+    expat
+    libpng
+    libGL
+    harfbuzz
+    xorg.libX11
+    xorg.libXext
+    xorg.libXrender
+    xorg.libxcb
   ];
 
-  shellHook = ''
-    echo "🚀 Python + .NET (8 & 9) devshell loaded!"
-    echo "Available SDKs:"
-    dotnet --list-sdks || echo ".NET not found — check nixpkgs version."
-  '';
+  DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "false";
+
+shellHook = ''
+  	echo ".NET development shell loaded"
+  	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/.nuget/packages/skiasharp/*/runtimes/linux-x64/native
+'';
 }
+
