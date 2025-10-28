@@ -103,25 +103,6 @@
     isNormalUser = true;
     description = "Oliwier";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [
-      kdePackages.kate
-      signal-desktop
-      vscode
-      neofetch
-      discord
-      dwarf-fortress
-      wineWow64Packages.full
-      yt-dlp
-      moc
-      logseq
-      megasync
-      flatpak
-      go-task
-      direnv
-      gcc
-      zig
-      steam
-    ];
   };
 
   programs.direnv.enable = true;
@@ -133,18 +114,7 @@
     '';
   };
 
-  services.flatpak.enable = true;
-  programs.git = {
-    enable = true;
-    config = {
-      user.name = "oliwiergramala";
-      user.email = "olivier.gramala@gmail.com";
-
-      init = {
-        defaultBranch = "main";
-      };
-    };
-  };
+  services.flatpak.enable = true; 
 
   # Install firefox.
   programs.firefox.enable = true;

@@ -36,6 +36,10 @@
         ];
       };
 
-      devShells.${system}.default = import ./devshell/default.nix { inherit pkgs; };
-    };
+      # DevShells
+      devShells.${system} = {
+		go = import ./devshell/go.nix { inherit pkgs; }; 
+        	default = import ./devshell/default.nix { inherit pkgs; };
+  	};
+     };
 }
