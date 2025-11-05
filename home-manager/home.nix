@@ -8,36 +8,49 @@
 	home.stateVersion = "25.05";
 
 	home.packages = with pkgs; [
-				jetbrains.rider
-    		kdePackages.kate
+		
+		# Git
+		gitnuro
+
+		# IDE/TextEditor
     		vscode
-    		discord
-    		yt-dlp
+		jetbrains.rider
+
+		# Games
+		steam
+		
+		# Socials
+		signal-desktop
+		discord
+
+		# Music
+		yt-dlp
     		moc
-    		logseq
+
+		# Other
+  		logseq
+		neofetch
     		megasync
     		flatpak
-    		steam
-				neofetch
-  	];
+    		kdePackages.kate
+		dosbox
+		keepassxc
+
+		# Documents
+		zathura
+		texliveFull
+
+		# Dosbox
+		wine
+	];
 
   	home.file = {
- 	
+ 		
 	};
-	
+
 	programs.neovim = {
-  		enable = true;
-  		viAlias = true;
-  		vimAlias = true;
-  		withNodeJs = true;
-
-  		plugins = with pkgs.vimPlugins; [
-    			nvim-tree-lua
-    			vim-startify
-
-  		];
-
-	};
+		enable = true;
+  	};
 
 	programs.git = {
     		enable = true;
