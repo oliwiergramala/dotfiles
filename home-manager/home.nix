@@ -8,36 +8,72 @@
 	home.stateVersion = "25.05";
 
 	home.packages = with pkgs; [
-				jetbrains.rider
-    		kdePackages.kate
+	
+		# IDE/TextEditor
     		vscode
-    		discord
-    		yt-dlp
+		jetbrains.rider
+
+		# Games
+		steam
+		
+		# Socials
+		signal-desktop
+		discord
+
+		# Music
+		rmpc
+		yt-dlp
     		moc
-    		logseq
+
+		# Other
+  		logseq
+		neofetch
     		megasync
     		flatpak
-    		steam
-				neofetch
-  	];
+    		kdePackages.kate
+		dosbox
+		keepassxc
+	];
 
   	home.file = {
- 	
+ 		
 	};
 	
-	programs.neovim = {
+ 	services.mpd = {
   		enable = true;
-  		viAlias = true;
-  		vimAlias = true;
-  		withNodeJs = true;
-
-  		plugins = with pkgs.vimPlugins; [
-    			nvim-tree-lua
-    			vim-startify
-
-  		];
-
+  		musicDirectory = "~/Music";
+  		network.listenAddress = "localhost";
+	  	extraConfig = ''
+    			audio_output {
+      				type "pulse"
+      				name "PulseAudio"
+    			}
+  		'';
 	};
+
+	 programs.neovim = {
+    		enable = true;
+    		plugins = with pkgs.vimPlugins; [
+      			lazy-nvim
+    		];
+
+    		extraLuaConfig = ''
+      			
+			vim.g.nvchad_theme = "catppuccin"
+			vim.g.nvchad_transparency = true
+
+			require("lazy").setup({
+				{ "nvim-lua/plenary.nvim" },
+  				{ "nvim-telescope/telescope.nvim", branch = "0.1.x" },
+  				{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  				{ "neovim/nvim-lspconfig" },
+  				{ "siduck76/NvChad" },
+			})
+
+      			vim.o.number = true
+      			vim.o.relativenumber = true
+    		'';
+  	};
 
 	programs.git = {
     		enable = true;

@@ -1,29 +1,15 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+{ config, pkgs, inputs, ...}:
 {
-  config,
-  pkgs,
-  inputs,
-  ...
-}: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    #inputs.nveem.packages.x86_64-linux.default
   ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -87,8 +73,6 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -105,7 +89,6 @@
     extraGroups = ["networkmanager" "wheel"];
   };
 
-  programs.direnv.enable = true;
   systemd.services.flatpak-repo = {
     wantedBy = ["multi-user.target"];
     path = [pkgs.flatpak];
@@ -115,9 +98,6 @@
   };
 
   services.flatpak.enable = true; 
-
-  # Install firefox.
-  programs.firefox.enable = true;
  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -129,39 +109,25 @@
     wget
     kdePackages.discover
     home-manager
-   # inputs.nveem.packages.x86_64-linux.default
   ];
+  
+  # Bash 
+  programs.bash = {
+  	promptInit = ''
+    	parse_git_branch() {
+      	git rev-parse --abbrev-ref HEAD 2>/dev/null
+    	}
 
-programs.bash = {
-  promptInit = ''
-    parse_git_branch() {
-      git rev-parse --abbrev-ref HEAD 2>/dev/null
-    }
+    	CYAN="\[\033[1;36m\]"
+    	BLUE="\[\033[0;34m\]"
+    	RED="\[\033[0;31m\]"    
+    	RESET="\[\033[0m\]"
 
-    CYAN="\[\033[1;36m\]"
-    BLUE="\[\033[0;34m\]"
-    RED="\[\033[0;31m\]"    
-    RESET="\[\033[0m\]"
+    	PS1="$CYAN[\u@\h]$RESET $BLUE\w$RESET :$RED \$(parse_git_branch)$RESET \\$ "
 
-    PS1="$CYAN[\u@\h]$RESET $BLUE\w$RESET :$RED \$(parse_git_branch)$RESET \\$ "
-
-    neofetch
-  '';
-};
-
-
-
-
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
+    	neofetch
+  	'';
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
