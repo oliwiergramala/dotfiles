@@ -12,6 +12,7 @@
 		# Git
 		gitnuro
 
+	
 		# IDE/TextEditor
     		vscode
 		jetbrains.rider
