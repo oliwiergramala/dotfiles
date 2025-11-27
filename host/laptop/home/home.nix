@@ -6,15 +6,14 @@
 	home.homeDirectory = "/home/oliwier";
 
 	home.stateVersion = "25.05";
-
+	imports = [ 
+		../../../modules/university.nix
+		../../../modules/develop.nix
+	];
 	home.packages = with pkgs; [
-		
-		# Git
-		gitnuro
-
 	
 		# IDE/TextEditor
-    		vscode
+		vscode
 		jetbrains.rider
 
 		# Games
@@ -26,37 +25,25 @@
 
 		# Music
 		yt-dlp
-    		moc
+    moc
 
 		# Other
-  		logseq
+  	logseq
 		neofetch
-    		megasync
-    		flatpak
-    		kdePackages.kate
-		dosbox
+    megasync
+    flatpak
+    kdePackages.kate
 		keepassxc
 
 		# Documents
 		zathura
 		texliveFull
-
-		# Dosbox
+		
 		wine
-	];
-
-  	home.file = {
- 		
-	};
+	];	
 
 	programs.neovim = {
 		enable = true;
-  	};
-
-	programs.git = {
-    		enable = true;
-    		userName = "oliwiergramala";
-    		userEmail = "olivier.gramala@gmail.com";
   	};
 
 	programs.firefox = {

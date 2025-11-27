@@ -26,12 +26,12 @@
       nixosConfigurations.${username} = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
-          ./nixos/configuration.nix
+          ./host/laptop/nixos/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./home-manager/home.nix;
+            home-manager.users.${username} = import ./host/laptop/home/home.nix;
 	    home-manager.backupFileExtension = "backup";
 	  }
         ];
@@ -39,7 +39,6 @@
 
       # DevShells
       devShells.${system} = {
-		go = import ./devshell/go.nix { inherit pkgs; }; 
         	default = import ./devshell/default.nix { inherit pkgs; };
   	};
      };
