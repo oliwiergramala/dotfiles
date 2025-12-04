@@ -11,6 +11,9 @@
 
   networking.hostName = "nixos"; # Define your hostname.
 
+  # Docker
+  virtualisation.docker.enable = true;
+
   # Enable networking
   networking.networkmanager.enable = true;
 

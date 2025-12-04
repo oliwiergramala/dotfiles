@@ -3,5 +3,7 @@
   imports = [
     ../programs/git.nix
     ../programs/docker.nix
+    ../programs/direnv.nix
   ];
 }
+
