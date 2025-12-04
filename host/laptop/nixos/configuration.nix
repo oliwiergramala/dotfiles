@@ -19,11 +19,6 @@
   
   hardware.opengl.driSupport32Bit = true; 
   
-  # Docker
-  virtualisation.docker = {
-    enable = true;
-  };  
-  
   # Fonts
   fonts.packages = with pkgs; [
 	nerd-fonts.hack
