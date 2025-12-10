@@ -2,7 +2,7 @@
 
 {
 	home.packages = with pkgs;[
-		texliveFull
-		zathura
+		kdePackages.kate
+		kdePackages.kcalc
 	];
 }

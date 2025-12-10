@@ -2,8 +2,7 @@
 {
   imports = [
     ../programs/libreoffice.nix
-    # ../programs/latex.nix
+    ../programs/latex.nix
     ../programs/dosbox.nix
-    ../programs/neofetch.nix
   ];
 }

@@ -9,46 +9,14 @@
 	imports = [ 
 		../../../modules/university.nix
 		../../../modules/develop.nix
+		../../../modules/utilities.nix
+		../../../modules/social.nix
+		../../../modules/base.nix
 	];
 	home.packages = with pkgs; [
-	
-		# IDE/TextEditor
-		vscode
-		jetbrains.rider
-
 		# Games
 		steam
-		
-		# Socials
-		signal-desktop
-		discord
-
-		# Music
-		yt-dlp
-    moc
-
-		# Other
-  	logseq
-		neofetch
-    megasync
-    flatpak
-    kdePackages.kate
-		keepassxc
-
-		# Documents
-		zathura
-		texliveFull
-		
-		wine
+    		megasync
+    		flatpak
 	];	
-
-	programs.neovim = {
-		enable = true;
-  	};
-
-	programs.firefox = {
-		enable = true;
-	};
-
-	
 }

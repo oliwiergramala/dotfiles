@@ -2,7 +2,7 @@
 
 {
 	home.packages = with pkgs;[
-		texliveFull
-		zathura
+		neovim
+		wl-clipboard
 	];
 }

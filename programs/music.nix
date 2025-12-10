@@ -2,7 +2,7 @@
 
 {
 	home.packages = with pkgs; [
-		signal-desktop
-		discord
+		yt-dlp
+		moc
 	];
 }

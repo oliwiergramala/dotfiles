@@ -23,18 +23,36 @@
       specialArgs = { inherit inputs; };
       pkgs = import nixpkgs { inherit system; };
     in {
-      nixosConfigurations.${username} = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
-        modules = [
-          ./host/laptop/nixos/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./host/laptop/home/home.nix;
-	    home-manager.backupFileExtension = "backup";
-	  }
-        ];
+      nixosConfigurations = {
+        laptop = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = [
+            ./host/laptop/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} =
+                import ./host/laptop/home/home.nix;
+              home-manager.backupFileExtension = "backup";
+            }
+          ];
+        };
+
+        pc = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = [
+            ./host/pc/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} =
+                import ./host/pc/home/home.nix;
+              home-manager.backupFileExtension = "backup";
+            }
+          ];
+        };
       };
 
       # DevShells
