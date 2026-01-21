@@ -5,7 +5,7 @@
 	home.username = "oliwier";
 	home.homeDirectory = "/home/oliwier";
 
-	home.stateVersion = "25.05";
+	home.stateVersion = "25.11";
 	imports = [ 
 		../../../modules/university.nix
 		../../../modules/develop.nix

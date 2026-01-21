@@ -6,6 +6,7 @@
     ../programs/direnv.nix
     ../programs/database.nix
     ../programs/ide.nix
+    ../programs/qemu.nix
   ];
 
 }

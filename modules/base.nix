@@ -11,5 +11,6 @@
 		wine
 		keepassxc
 		firefox
-	];
+		xorg.xhost
+];
 }
