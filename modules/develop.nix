@@ -7,6 +7,7 @@
     ../programs/database.nix
     ../programs/ide.nix
     ../programs/qemu.nix
+    ../programs/freecad.nix
   ];
 
 }
