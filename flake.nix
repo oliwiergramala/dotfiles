@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration";
+  description = "NixOS configuration with multiple hosts";
 
   nixConfig = {
     extra-substituters = [
@@ -19,45 +19,40 @@
   outputs = { self, nixpkgs, home-manager, ... } @inputs:
     let
       system = "x86_64-linux";
-      username = "oliwier";
+      hosts = {
+        laptop = {
+          username = "oliwier";
+          configFile = ./host/laptop/nixos/configuration.nix;
+          homeFile = ./host/laptop/home/home.nix;
+        };
+        pc = {
+          username = "oliwier";
+          configFile = ./host/pc/nixos/configuration.nix;
+          homeFile = ./host/pc/home/home.nix;
+        };
+      };
       specialArgs = { inherit inputs; };
       pkgs = import nixpkgs { inherit system; };
     in {
-      nixosConfigurations = {
-        laptop = nixpkgs.lib.nixosSystem {
-          inherit system specialArgs;
-          modules = [
-            ./host/laptop/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} =
-                import ./host/laptop/home/home.nix;
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
-        };
-
-        pc = nixpkgs.lib.nixosSystem {
-          inherit system specialArgs;
-          modules = [
-            ./host/pc/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} =
-                import ./host/pc/home/home.nix;
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
-        };
-      };
+      nixosConfigurations = builtins.mapAttrs (hostName: hostAttrs: 
+  nixpkgs.lib.nixosSystem {
+    inherit system specialArgs;
+    modules = [
+      hostAttrs.configFile
+      home-manager.nixosModules.home-manager
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.${hostAttrs.username} = import hostAttrs.homeFile;
+        home-manager.backupFileExtension = "backup";
+      }
+    ];
+  }
+) hosts;
 
       # DevShells
       devShells.${system} = {
-        	default = import ./devshell/default.nix { inherit pkgs; };
-  	};
-     };
+        default = import ./devshell/default.nix { inherit pkgs; };
+      };
+    };
 }
