@@ -33,14 +33,18 @@ fileSystems."/home/oliwier/HDD" = {
   networking.hostName = "nixos"; # Define your hostname.
 nixpkgs.config.permittedInsecurePackages = [
                 "electron-36.9.5"
+		"ventoy-1.1.05"
               ];
 
   # Enable networking
   networking.networkmanager.enable = true;
-
+  
+  networking.firewall = {
+	enable = true;
+  };
   # SSH
   services.openssh.enable = true;
- 
+
   # Nvidia
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -54,7 +58,7 @@ nixpkgs.config.permittedInsecurePackages = [
 	powerManagement.enable = false;
 	open = false;
 	nvidiaSettings = true;
-	package = config.boot.kernelPackages.nvidiaPackages.production;
+	package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   boot.blacklistedKernelModules = [ "nouveau" ];

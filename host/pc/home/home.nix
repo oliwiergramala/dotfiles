@@ -6,62 +6,19 @@
 	home.homeDirectory = "/home/oliwier";
 
 	home.stateVersion = "25.05";
-
+	imports = [ 
+		../../../modules/university.nix
+		../../../modules/develop.nix
+		../../../modules/utilities.nix
+		../../../modules/social.nix
+		../../../modules/base.nix
+	];
 	home.packages = with pkgs; [
-	
-		# IDE/TextEditor
-    		vscode
-		jetbrains.rider
 
 		# Games
 		steam
 		heroic
-		wineWowPackages.stable
-		
-		# Socials
-		signal-desktop
-		discord
-
-		# Music
-		yt-dlp
-		moc
-
-		# Other
-  		logseq
-		neofetch
-	    	megasync
-    		flatpak
-    		kdePackages.kate
-		dosbox
-		keepassxc
-		qemu
-		# LaTeX
-		texliveFull
-		zathura
-		
-		# 3D model
-		freecad-wayland
-	
-		# Git
-		gitnuro
-
-		dotnet-sdk_9
+	    	flatpak
+		ventoy
 	];
-
-  	home.file = {
-	};
-
-	 programs.neovim = {
-    		enable = true;
-	};
-
-	programs.git = {
-    		enable = true;
-    		userName = "oliwiergramala";
-    		userEmail = "olivier.gramala@gmail.com";
-  	};
-
-	programs.firefox = {
-		enable = true;
-	};
 }
